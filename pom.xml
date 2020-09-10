@@ -40,11 +40,13 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.5</version>
-                <!-- <configuration>
+                <configuration>
                     <excludes>
-                        <exclude>**\*MovieItem.class</exclude>
+<!--                        <exclude>**\*MovieItem.class</exclude>-->
+                        <exclude>**/*domain/*</exclude>
+                        <exclude>**/*repository/*</exclude>
                     </excludes>
-                </configuration> -->
+                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
