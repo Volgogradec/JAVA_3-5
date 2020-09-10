@@ -42,7 +42,6 @@
                 <version>0.8.5</version>
                 <configuration>
                     <excludes>
-<!--                        <exclude>**\*MovieItem.class</exclude>-->
                         <exclude>**/*domain/*</exclude>
                         <exclude>**/*repository/*</exclude>
                     </excludes>
