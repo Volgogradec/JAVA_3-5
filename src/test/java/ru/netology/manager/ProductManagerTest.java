@@ -1,48 +1,139 @@
 package ru.netology.manager;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import ru.netology.domain.Book;
 import ru.netology.domain.Product;
+import ru.netology.domain.Smartphone;
 import ru.netology.repository.ProductRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductManagerTest {
-    private ProductRepository productRepository = new ProductRepository();
-
-    private Product first = new Product(1, "first", 100);
-    private Product second = new Product(2, "second", 200);
-    private Product third = new Product(3, "third", 300);
+    private ProductRepository repository = new ProductRepository();
+    private ProductManager manager = new ProductManager(repository);
+    private Book book1 = new Book(1, "Book name", 100, "Author1");
+    private Book book2 = new Book(2, "Book name", 200, "Author2");
+    private Book book3 = new Book(3, "Third book", 300, "Author2");
+    private Smartphone smartphone1 = new Smartphone(1, "Smartphone name", 300, "Manufacturer1");
+    private Smartphone smartphone2 = new Smartphone(2, "Smartphone name", 500, "Manufacturer2");
+    private Smartphone smartphone3 = new Smartphone(3, "Smartphone3", 700, "Manufacturer2");
 
     @BeforeEach
     public void setUp() {
-        productRepository.save(first);
-        productRepository.save(second);
-        productRepository.save(third);
+        manager.add(book1);
+        manager.add(book2);
+        manager.add(book3);
+        manager.add(smartphone1);
+        manager.add(smartphone2);
+        manager.add(smartphone3);
     }
 
     @Test
-    void add() {
-        Product[] actual = productRepository.findAll();
-        Product[] expected = new Product[]{first, second, third};
+    void searchBookByNameIfExistOneProduct() {
+        String text = "Third book";
 
+        Product[] expected = new Product[]{book3};
+        Product[] actual = manager.searchBy(text);
         assertArrayEquals(expected, actual);
     }
 
     @Test
-    void searchBy() {
+    void searchBookByNameIfExistTwoProduct() {
+        String text = "Book name";
+
+        Product[] expected = new Product[]{book1, book2};
+        Product[] actual = manager.searchBy(text);
+        assertArrayEquals(expected, actual);
     }
 
     @Test
-    void matchesBookSearchInName(Book book, "firstName") {
-//        Product product = new Book(1,"firstName", 100, "firstAuthor");
-//        productRepository.save(product);
-//
-////        Book actual = book.getName();
-//        String actual = "firstName";
-//        String expected = "firstName";
-//
-//        assertEquals(expected, actual);
-//    }
+    void searchBookByNameIfNotExist() {
+        String text = "Not exist";
+
+        Product[] expected = new Product[]{};
+        Product[] actual = manager.searchBy(text);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchBookByAuthorIfExistOneProduct() {
+        String text = "Author1";
+
+        Product[] expected = new Product[]{book1};
+        Product[] actual = manager.searchBy(text);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchBookByAuthorIfExistTwoProduct() {
+        String text = "Author2";
+
+        Product[] expected = new Product[]{book2, book3};
+        Product[] actual = manager.searchBy(text);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchBookByAuthorIfNotExist() {
+        String text = "Not exist author";
+
+        Product[] expected = new Product[]{};
+        Product[] actual = manager.searchBy(text);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchSmartphoneByNameIfExistOneProduct() {
+        String text = "Smartphone3";
+
+        Product[] expected = new Product[]{smartphone3};
+        Product[] actual = manager.searchBy(text);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchSmartphoneByNameIfExistTwoProduct() {
+        String text = "Smartphone name";
+
+        Product[] expected = new Product[]{smartphone1, smartphone2};
+        Product[] actual = manager.searchBy(text);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchSmartphoneByNameIfNotExist() {
+        String text = "Not exist name";
+
+        Product[] expected = new Product[]{};
+        Product[] actual = manager.searchBy(text);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchSmartphoneByManufacturerIfExistOneProduct() {
+        String text = "Manufacturer1";
+
+        Product[] expected = new Product[]{smartphone1};
+        Product[] actual = manager.searchBy(text);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchSmartphoneByManufacturerIfExistTwoProduct() {
+        String text = "Manufacturer2";
+
+        Product[] expected = new Product[]{smartphone2, smartphone3};
+        Product[] actual = manager.searchBy(text);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    void searchSmartphoneByManufacturerIfNotExist() {
+        String text = "Not exist Manufacturer";
+
+        Product[] expected = new Product[]{};
+        Product[] actual = manager.searchBy(text);
+        assertArrayEquals(expected, actual);
+    }
 }
